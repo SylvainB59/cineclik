@@ -65,7 +65,7 @@ def get_films_by_group(group):
 
 # Configuration Gemini
 genai.configure(api_key=os.getenv('GOOGLE_API_KEY'))
-model = genai.GenerativeModel("gemini-1.5-flash")
+gitmodel = genai.GenerativeModel("gemini-1.5-flash")
 gemini_chat = model.start_chat(history=[])
 
 @app.route("/chat", methods=["GET", "POST"])
