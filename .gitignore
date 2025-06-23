@@ -1,0 +1,9 @@
+# Fichiers spécifiques à macOS
+.DS_Store
+._*
+
+# Fichiers et dossiers de cache/dépendances de développement (exemples courants)
+__pycache__/        # Cache Python
+venv/               # Environnement virtuel Python
+*.log               # Fichiers de log
+.env                # Fichiers d'environnement local (TRÈS IMPORTANT !)
