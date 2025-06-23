@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8" />
+    <title>Mood to Film - Recommandation par humeur</title>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet" />
+    <style>
+        html, body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Bebas Neue', sans-serif;
+            color: #fff;
+            height: 100%;
+        }
+        .cineclik-logo {
+    position: fixed;
+    top: 20px;
+    right: 30px;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 28px;
+    color: #fff;
+    background: rgba(0, 0, 0, 0.6);
+    padding: 8px 15px;
+    border-radius: 10px;
+    z-index: 2;
+}
+.cineclik-logo:hover {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+        .bg-video {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100vw; height: 100vh;
+            object-fit: cover;
+            z-index: -1;
+            opacity: 0.4;
+            filter: brightness(1.2) contrast(1.1);
+        }
+
+        .content {
+            position: relative;
+            z-index: 1;
+            min-height: 100vh;
+            background: rgba(0,0,0,0.6);
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: center;
+            padding: 50px 20px;
+        }
+
+        h1 {
+    font-size: 2.2rem;
+    font-weight: normal;
+    color: #ffcc00;
+    border-bottom: 1px solid #ffcc00;
+    padding-bottom: 5px;
+    margin-left: 20px;
+    margin-bottom: 30px;
+    align-self: flex-start;
+}
+
+.page-subtitle {
+    align-self: flex-start;
+    margin-left: 20px;
+    margin-top: -20px;
+    margin-bottom: 30px;
+    font-size: 2rem;
+    color: #ccc;
+}
+
+        .mood-grid {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 30px;
+            max-width: 640px;
+            width: 100%;
+        }
+
+        .mood-card {
+            width: 180px;
+            text-align: center;
+        }
+
+        .mood-card img {
+            width: 180px;
+            height: 240px;
+            object-fit: cover;
+            border-radius: 10px;
+            box-shadow: 0 0 8px #000;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .mood-card img:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 15px #ffcc00;
+        }
+
+        .mood-name-original {
+            font-size: 1rem;
+            color: #ccc;
+            margin-bottom: 5px;
+        }
+
+        .mood-name-user {
+            font-size: 1.2rem;
+            color: #ffcc00;
+        }
+
+        button {
+            all: unset;
+            cursor: pointer;
+            display: block;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+    <a href="/" class="cineclik-logo">CineClik</a>
+<video class="bg-video" autoplay muted loop>
+    <source src="{{ url_for('static', filename='fond.mp4') }}" type="video/mp4" />
+</video>
+
+<div class="content">
+    <h1>Recommandation par humeur</h1>
+    <p class="page-subtitle">Un film pour chaque état d’esprit</p>
+
+    <div class="mood-grid">
+        <!-- JOYEUX -->
+        <form action="/moodtofilm" method="get">
+            <input type="hidden" name="mood" value="joyeux" />
+            <button class="mood-card" type="submit">
+                <div class="mood-name-original">Joyeux</div>
+                <img src="{{ url_for('static', filename='joyeux.png') }}" alt="Motivé" />
+                <div class="mood-name-user">Envie de rigoler</div>
+            </button>
+        </form>
+
+        <!-- TRISTE -->
+        <form action="/moodtofilm" method="get">
+            <input type="hidden" name="mood" value="triste" />
+            <button class="mood-card" type="submit">
+                <div class="mood-name-original">Triste</div>
+                <img src="{{ url_for('static', filename='triste.png') }}" alt="Triste " />
+                <div class="mood-name-user">Besoin de réconfort</div>
+            </button>
+        </form>
+
+        <!-- MÉLANCOLIQUE -->
+        <form action="/moodtofilm" method="get">
+            <input type="hidden" name="mood" value="melancolique" />
+            <button class="mood-card" type="submit">
+                <div class="mood-name-original">Mélancolique</div>
+                <img src="{{ url_for('static', filename='melancolique.png') }}" alt="Mélancolique" />
+                <div class="mood-name-user">D'humeur rêveuse</div>
+            </button>
+        </form>
+
+        <!-- MOTIVÉ -->
+        <form action="/moodtofilm" method="get">
+            <input type="hidden" name="mood" value="motivé" />
+            <button class="mood-card" type="submit">
+                <div class="mood-name-original">Motivé(e)</div>
+                <img src="{{ url_for('static', filename='motivee.png') }}" alt="Motivé" />
+                <div class="mood-name-user">Envie de foncer</div>
+            </button>
+        </form>
+
+        <!-- CAPTIVANT -->
+    <form action="/moodtofilm" method="get">
+    <input type="hidden" name="mood" value="captivant" />
+    <button class="mood-card" type="submit">
+        <div class="mood-name-original">Captivant</div>
+        <img src="{{ url_for('static', filename='captivant.png') }}" alt="Captivant" />
+        <div class="mood-name-user">Envie de mystère</div>
+    </button>
+</form>
+
+        <!-- STRESSÉ -->
+        <form action="/moodtofilm" method="get">
+            <input type="hidden" name="mood" value="stressé" />
+            <button class="mood-card" type="submit">
+                <div class="mood-name-original">Stressé(e)</div>
+                <img src="{{ url_for('static', filename='stresse.jpg') }}" alt="Stressé" />
+                <div class="mood-name-user">Besoin de souffler</div>
+            </button>
+        </form>
+    </div>
+</div>
+
+</body>
+</html>
+
