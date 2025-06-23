@@ -2,8 +2,10 @@ import requests
 from flask import Flask, render_template, request, jsonify
 import google.generativeai as genai
 import random 
+import os
+from dotenv import load_dotenv
 
-
+load_dotenv()
 app = Flask(__name__)
 
 
@@ -65,7 +67,7 @@ def get_films_by_group(group):
 
 # Configuration Gemini
 genai.configure(api_key=os.getenv('GOOGLE_API_KEY'))
-gitmodel = genai.GenerativeModel("gemini-1.5-flash")
+model = genai.GenerativeModel("gemini-1.5-flash")
 gemini_chat = model.start_chat(history=[])
 
 @app.route("/chat", methods=["GET", "POST"])
