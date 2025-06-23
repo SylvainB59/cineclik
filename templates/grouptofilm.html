@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8" />
+    <title>Group to Film - Recommandation en groupe</title>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <style>
+        html, body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Bebas Neue', sans-serif;
+            color: #fff;
+            height: 100%;
+            
+        }
+
+        .cineclik-logo {
+    position: fixed;
+    top: 20px;
+    right: 30px;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 28px;
+    color: #fff;
+    background: rgba(0, 0, 0, 0.6);
+    padding: 8px 15px;
+    border-radius: 10px;
+    z-index: 2;
+}
+
+.cineclik-logo:hover {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+
+        .bg-video {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100vw; height: 100vh;
+            object-fit: cover;
+            z-index: -1;
+            opacity: 0.3;
+            filter: brightness(1.4) contrast(1.05);
+        }
+
+        .content {
+            position: relative;
+            z-index: 1;
+            min-height: 100vh;
+            background: rgba(0, 0, 0, 0.5);
+            display: flex;
+            flex-direction: column;
+            padding: 50px 20px;
+        }
+
+        h1 {
+            font-size: 2.2rem;
+            font-weight: normal;
+            color: #ffcc00;
+            border-bottom: 1px solid #ffcc00;
+            padding-bottom: 5px;
+            margin-left: 0px;
+            margin-bottom: 10px;
+            align-self: flex-start;
+        }
+
+        form {
+            margin-left: 20px;
+            max-width: 600px;
+        }
+
+        label {
+            display: block;
+            margin: 20px 0 5px;
+            font-size: 1.2rem;
+            color: #ffcc00;
+        }
+
+        select {
+            width: 100%;
+        }
+
+        .select2-container--default .select2-selection--multiple {
+            background-color: #222 !important;
+            border: 1px solid #555;
+            border-radius: 6px;
+            padding: 6px;
+            color: rgb(0, 0, 0);
+        }
+
+        .select2-container--default .select2-results__option {
+    background-color: #222;  /* fond des options */
+    color: #fff;             /* texte blanc */
+}
+
+.select2-container--default .select2-results__option--highlighted[aria-selected] {
+    background-color: #444;  /* fond quand survolé */
+    color: #ffcc00;          /* texte jaune */
+}
+
+.select2-dropdown {
+    background-color: #222;  /* fond du menu déroulant */
+    border: 1px solid #555;
+}
+
+.search-button {
+    background-color: #bba446;
+    color: #000;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1rem;              /* Plus petit */
+    padding: 10px 20px;           /* Taille réduite */
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    box-shadow: 0 0 8px #000;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    margin: 25px 20px;
+}
+
+.search-button:hover {
+    background-color: #ffcc00;
+    transform: scale(1.03);
+    box-shadow: 0 0 12px #ffcc00;
+}
+
+.group-title-block {
+        align-self: flex-start;
+        margin-left: 25px;
+        margin-bottom: 20px;
+    }
+
+    h1 {
+        font-size: 2.2rem;
+        font-weight: normal;
+        color: #ffcc00;
+        border-bottom: 1px solid #ffcc00;
+        padding-bottom: 5px;
+        margin-bottom: 20px;
+    }
+
+    .subtitle {
+        font-size: 1.2rem;
+        color: #fff;
+        margin: 0;
+        margin-left: 0;  /* aligne avec le h1 */
+        padding-left: 0;
+    }
+
+    </style>
+</head>
+<body>
+    <a href="/" class="cineclik-logo">CineClik</a>
+<video class="bg-video" autoplay muted loop>
+    <source src="{{ url_for('static', filename='fond2.mp4') }}" type="video/mp4" />
+</video>
+
+<div class="content">
+    <div class="group-title-block">
+        <h1>Recommandation en groupe</h1>
+        <p class="subtitle">Trouvez votre film parfait en groupe</p>
+    </div>
+
+    <form action="/grouptofilm" method="get">
+        <!-- GENRES -->
+        <label for="genres">Genres</label>
+        <select name="genres" id="genres" multiple>
+            <option>Drama</option>
+            <option>Comedy</option>
+            <option>Thriller</option>
+            <option>Romance</option>
+            <option>Crime</option>
+            <option>Action</option>
+            <option>Adventure</option>
+            <option>Mystery</option>
+            <option>Horror</option>
+            <option>Family</option>
+            <option>Fantasy</option>
+            <option>Music</option>
+            <option>History</option>
+            <option>Animation</option>
+            <option>War</option>
+            <option>Sport</option>
+            <option>Western</option>
+        </select>
+
+        <!-- ACTEURS -->
+        <label for="actors">Acteurs</label>
+        <select name="actors" id="actors" multiple></select>
+
+        <!-- RÉALISATEURS -->
+        <label for="directors">Réalisateurs</label>
+        <select name="directors" id="directors" multiple></select>
+
+       
+        <button type="submit" class="search-button">Rechercher</button>
+
+    </form>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+<script>
+    $(document).ready(function() {
+        $('#genres').select2({ placeholder: 'Sélectionnez un ou plusieurs genres' });
+        $('#actors').select2({ placeholder: 'Choisissez les acteurs' });
+        $('#directors').select2({ placeholder: 'Choisissez les réalisateurs' });
+    });
+</script>
+
+</body>
+</html>

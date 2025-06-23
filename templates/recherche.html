@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <title>Recherchez votre prochain film</title>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet" />
+  <style>
+    body, html {
+      margin: 0;
+      padding: 0;
+      font-family: 'Bebas Neue', sans-serif;
+      color: white;
+      height: 100%;
+      overflow-x: hidden;
+    }
+
+    .cineclik-logo {
+    position: fixed;
+    top: 20px;
+    right: 30px;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 28px;
+    color: #fff;
+    background: rgba(0, 0, 0, 0.6);
+    padding: 8px 15px;
+    border-radius: 10px;
+    z-index: 2;
+}
+
+.cineclik-logo:hover {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+    .bg-video {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      object-fit: cover;
+      z-index: -1;
+      filter: brightness(1.1) contrast(1.1);
+    }
+
+    .container {
+      background: rgba(0, 0, 0, 0.6);
+      padding: 50px 30px;
+      min-height: 100vh;
+    }
+
+    h1 {
+      text-align: center;
+      color: #ffcc00;
+      margin-bottom: 20px;
+    }
+
+    .search-bar {
+      text-align: center;
+      margin-bottom: 40px;
+    }
+
+    .search-bar input {
+      width: 50%;
+      padding: 10px;
+      font-size: 1.2rem;
+      border-radius: 8px;
+      border: none;
+    }
+
+    .genre-section {
+      margin-bottom: 40px;
+    }
+
+    .genre-title {
+      font-size: 2rem;
+      margin-bottom: 10px;
+      color: #ffcc00;
+    }
+
+    .film-row {
+      display: flex;
+      overflow-x: auto;
+      gap: 20px;
+      padding-bottom: 10px;
+    }
+
+    .film-card {
+      min-width: 150px;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 10px;
+      padding: 10px;
+      text-align: center;
+      flex-shrink: 0;
+    }
+
+    .film-card img {
+      width: 100%;
+      border-radius: 8px;
+      margin-bottom: 8px;
+    }
+
+    .film-card p {
+      color: white;
+      margin: 0;
+    }
+
+    ::-webkit-scrollbar {
+      height: 6px;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #888;
+      border-radius: 3px;
+    }
+  </style>
+</head>
+<body>
+  <a href="/" class="cineclik-logo">CineClik</a>
+<video class="bg-video" autoplay muted loop>
+  <source src="{{ url_for('static', filename='fond.mp4') }}" type="video/mp4" />
+</video>
+
+<div class="container">
+  <h1>Recherchez votre prochain film</h1>
+
+  <div class="search-bar">
+    <input type="text" placeholder="Entrez un titre, un genre, un acteur..." />
+  </div>
+
+  <!-- Genres simulés -->
+  {% for genre in ['Action/Aventure', 'Thriller', 'Comédie', 'Fantastique', 'Drame', 'Romance'] %}
+    <div class="genre-section">
+      <div class="genre-title">{{ genre }}</div>
+      <div class="film-row">A
+        {% for i in range(6) %}
+          <div class="film-card">
+            <img src="{{ url_for('static', filename='placeholder.jpg') }}" alt="film">
+            <p>Film {{ i + 1 }}</p>
+          </div>
+        {% endfor %}
+      </div>
+    </div>
+  {% endfor %}
+
+</div>
+</body>
+</html>
+
+
+
+
+
+
