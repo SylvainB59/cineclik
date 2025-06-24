@@ -115,7 +115,8 @@
             </div>
             <div class="info">
                 <h1>{{ film.originalTitle }}</h1>
-                <div class="meta">{{ film.genres_list }} | {{ film.runtimeMinutes }} min</div>
+                <div class="meta">{{ film.startYear|int }} | {{ film.genres_list }} | {{ film.runtimeMinutes|int }} min |
+                     Note : {{ "%.1f"|format(film.averageRating) }}/10 ({{ "{:,.0f}".format(film.numVotes)|replace(',', ' ') }} votes)</div>
 
                 <div class="section">
                     <strong>Synopsis :</strong>

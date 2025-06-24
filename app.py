@@ -79,6 +79,9 @@ def film_infos(tconst):
         "poster_url": f"https://image.tmdb.org/t/p/w500{row['poster_path']}" if pd.notna(row["poster_path"]) else "",
         "backdrop_url": f"https://image.tmdb.org/t/p/w780{row['backdrop_path']}" if pd.notna(row["backdrop_path"]) else "",
         "video_url": video_url,
+        "startYear": row["startYear"],
+        "averageRating": row["averageRating"],
+        "numVotes": row["numVotes"]
     }
 
     return render_template("infos.html", film=film)
@@ -153,7 +156,7 @@ def recommander_films_humeur(humeur_choisie, dataframe_films, page=1, recos_par_
     scaler = MinMaxScaler()
     df_filtre[['score_normalise']] = scaler.fit_transform(df_filtre[['score']])
     df_filtre[['pertinence_normalise']] = scaler.fit_transform(df_filtre[['pertinence_mood']])
-    df_filtre['score_reco_final'] = (0.7 * df_filtre['pertinence_normalise'] + 0.6 * df_filtre['score_normalise'])
+    df_filtre['score_reco_final'] = (0.6 * df_filtre['pertinence_normalise'] + 0.4 * df_filtre['score_normalise'])
     
     df_tries = df_filtre.sort_values(by='score_reco_final', ascending=False)
     
