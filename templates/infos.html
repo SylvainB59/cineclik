@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <title>{{ film.originalTitle }} - CineClik</title>
     <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Forum&display=swap" rel="stylesheet">
     <style>
         body {
             margin: 0;
@@ -93,6 +94,12 @@
             height: 360px;
             border-radius: 10px;
         }
+
+        .texte {
+            font-family: "Forum", serif;
+            /* font-weight: 400; */
+            font-style: normal;
+        }
     </style>
 </head>
 <body>
@@ -112,15 +119,17 @@
 
                 <div class="section">
                     <strong>Synopsis :</strong>
-                    <p>{{ film.overview_text }}</p>
+                    <p class="texte">{{ film.overview_text }}</p>
                 </div>
 
                 <div class="section">
-                    <strong>Réalisateur :</strong> {{ film.directors_name }}
+                    <strong>Réalisateur :</strong>
+                    <p class="texte">{{ film.directors_name }}</p>
                 </div>
 
                 <div class="section">
-                    <strong>Acteurs :</strong> {{ film.actors_names }}
+                    <strong>Acteurs :</strong>
+                    <p class="texte">{{ film.actors_names }}</p>
                 </div>
 
                 {% if film.video_url %}
