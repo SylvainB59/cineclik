@@ -12,24 +12,26 @@
       color: white;
       height: 100%;
       overflow-x: hidden;
+      
     }
 
     .cineclik-logo {
-    position: fixed;
-    top: 20px;
-    right: 30px;
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 28px;
-    color: #fff;
-    background: rgba(0, 0, 0, 0.6);
-    padding: 8px 15px;
-    border-radius: 10px;
-    z-index: 2;
-}
+      position: fixed;
+      top: 20px;
+      right: 30px;
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 28px;
+      color: #fff;
+      background: rgba(0, 0, 0, 0.6);
+      padding: 8px 15px;
+      border-radius: 10px;
+      z-index: 2;
+      text-decoration: none;
+    }
 
-.cineclik-logo:hover {
-    background: rgba(255, 255, 255, 0.2);
-}
+    .cineclik-logo:hover {
+      background: rgba(255, 255, 255, 0.2);
+    }
 
     .bg-video {
       position: fixed;
@@ -43,7 +45,7 @@
     }
 
     .container {
-      background: rgba(0, 0, 0, 0.6);
+      background: rgba(0, 0, 0, 0.75);
       padding: 50px 30px;
       min-height: 100vh;
     }
@@ -86,11 +88,22 @@
 
     .film-card {
       min-width: 150px;
+      max-width: 200px;
       background: rgba(255, 255, 255, 0.1);
       border-radius: 10px;
       padding: 10px;
       text-align: center;
       flex-shrink: 0;
+      cursor: pointer;
+      transition: 0.3s ease;
+      text-decoration: none;
+      color: white;
+    }
+
+    .film-card:hover {
+      transform: scale(1.05);
+      background: rgb(255, 204, 0, 0.8);
+      color: black;
     }
 
     .film-card img {
@@ -100,7 +113,6 @@
     }
 
     .film-card p {
-      color: white;
       margin: 0;
     }
 
@@ -114,7 +126,9 @@
   </style>
 </head>
 <body>
-  <a href="/" class="cineclik-logo">CineClik</a>
+
+<a href="/" class="cineclik-logo">CineClik</a>
+
 <video class="bg-video" autoplay muted loop>
   <source src="{{ url_for('static', filename='fond.mp4') }}" type="video/mp4" />
 </video>
@@ -122,31 +136,46 @@
 <div class="container">
   <h1>Recherchez votre prochain film</h1>
 
-  <div class="search-bar">
-    <input type="text" placeholder="Entrez un titre, un genre, un acteur..." />
-  </div>
+  <form method="POST" style="display: flex; justify-content: center; gap: 10px; margin-bottom: 40px;">
+    <input
+      type="text"
+      name="query"
+      placeholder="Entrez un titre, un genre, un acteur..."
+      style="flex-grow: 1; max-width: 400px; padding: 10px; font-size: 1.2rem; border-radius: 8px; border: none;" />
+  
+    <button
+      type="submit"
+      style="background: #ffcc00; border: none; padding: 10px 20px; font-size: 1.2rem; font-weight: bold; cursor: pointer; border-radius: 8px; color: #000;">
+      Envoyer
+    </button>
+ 
+    
+  </form>
 
-  <!-- Genres simulés -->
-  {% for genre in ['Action/Aventure', 'Thriller', 'Comédie', 'Fantastique', 'Drame', 'Romance'] %}
+  {% if film %}
+    <div style="margin-bottom:40px; text-align:center;">
+      <h2>Résultat de la recherche</h2>
+      <a href="{{ url_for('film_infos', tconst=film.tconst) }}" class="film-card" style="display: inline-block;">
+          <img src="https://image.tmdb.org/t/p/w200/{{ film.poster_path }}" alt="{{ film.primaryTitle }}">
+          <p>{{ film.primaryTitle }}</p>
+      </a>
+    </div>
+  {% endif %}
+
+  {% for genre in genres %}
     <div class="genre-section">
       <div class="genre-title">{{ genre }}</div>
-      <div class="film-row">A
-        {% for i in range(6) %}
-          <div class="film-card">
-            <img src="{{ url_for('static', filename='placeholder.jpg') }}" alt="film">
-            <p>Film {{ i + 1 }}</p>
-          </div>
+      <div class="film-row">
+        {% for film in films_by_genre[genre] %}
+          <a href="{{ url_for('film_infos', tconst=film.tconst) }}" class="film-card">
+            <img src="https://image.tmdb.org/t/p/w200/{{ film.poster_path }}" alt="{{ film.primaryTitle }}">
+            <p>{{ film.primaryTitle }}</p>
+          </a>
         {% endfor %}
       </div>
     </div>
   {% endfor %}
-
 </div>
+
 </body>
 </html>
-
-
-
-
-
-
