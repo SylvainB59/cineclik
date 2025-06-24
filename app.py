@@ -58,6 +58,10 @@ def home():
 
 @app.route("/film/<tconst>")
 def film_infos(tconst):
+    # On récupère les paramètres de l'URL pour savoir d'où vient l'utilisateur
+    mood_origine = request.args.get('mood')
+    page_origine = request.args.get('page')
+
     film_data = df[df["tconst"] == tconst]
     if film_data.empty:
         return "Film non trouvé", 404
@@ -84,7 +88,7 @@ def film_infos(tconst):
         "numVotes": row["numVotes"]
     }
 
-    return render_template("infos.html", film=film)
+    return render_template("infos.html", film=film, mood_origine=mood_origine, page_origine=page_origine)
 
 @app.route('/recherche', methods=['GET', 'POST'])
 def recherche():
@@ -156,7 +160,7 @@ def recommander_films_humeur(humeur_choisie, dataframe_films, page=1, recos_par_
     scaler = MinMaxScaler()
     df_filtre[['score_normalise']] = scaler.fit_transform(df_filtre[['score']])
     df_filtre[['pertinence_normalise']] = scaler.fit_transform(df_filtre[['pertinence_mood']])
-    df_filtre['score_reco_final'] = (0.6 * df_filtre['pertinence_normalise'] + 0.4 * df_filtre['score_normalise'])
+    df_filtre['score_reco_final'] = (0.5 * df_filtre['pertinence_normalise'] + 0.5 * df_filtre['score_normalise'])
     
     df_tries = df_filtre.sort_values(by='score_reco_final', ascending=False)
     
