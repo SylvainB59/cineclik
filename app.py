@@ -2,13 +2,22 @@ import requests
 from flask import Flask, render_template, request, jsonify
 import google.generativeai as genai
 import random 
+import joblib
 import os
 from dotenv import load_dotenv
 
 load_dotenv()
 app = Flask(__name__)
 
-
+try:
+    recommender_pipeline = joblib.load('movie_recommender_pipeline_weighted.pkl')
+    movies_df = pd.read_csv('movies_data_for_app_weighted.csv')
+    print("Modèle de recommandation pondéré et données des films chargés avec succès.")
+except FileNotFoundError:
+    print("ERREUR: Le fichier 'movie_recommender_pipeline_weighted.pkl' ou 'movies_data_for_app_weighted.csv' n'a pas été trouvé.")
+    print("Assurez-vous d'avoir exécuté 'train_and_save_model.py' au préalable.")
+    recommender_pipeline = None
+    movies_df = None
 
 
 
