@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8" />
+    <title>Parlez à l'assistant - CineClik</title>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet" />
+    <style>
+        body, html {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            font-family: 'Bebas Neue', sans-serif;
+            color: #fff;
+        }
+        .cineclik-logo {
+    position: fixed;
+    top: 20px;
+    right: 30px;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 28px;
+    color: #fff;
+    background: rgba(0, 0, 0, 0.6);
+    padding: 8px 15px;
+    border-radius: 10px;
+    z-index: 2;
+}
+        
+.cineclik-logo:hover {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+        .bg-video {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100vw; height: 100vh;
+            object-fit: cover;
+            z-index: -1;
+            filter: brightness(1.1) contrast(1.1);
+        }
+
+        .content {
+            position: relative;
+            z-index: 1;
+            padding: 50px 30px;
+            background: rgba(0,0,0,0.6);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            max-width: 600px;
+            margin: auto;
+        }
+
+        .header {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 30px;
+            position: relative;
+        }
+
+        .avatar-inline {
+            width: 100px;
+            height: auto;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+
+        .avatar-inline:hover {
+            transform: rotateY(180deg);
+        }
+
+        .speech-bubble {
+            position: absolute;
+            top: -50px;
+            background: #222;
+            color: #fff;
+            padding: 8px 12px;
+            border-radius: 12px;
+            font-size: 0.9rem;
+            white-space: nowrap;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .header.active .speech-bubble {
+            opacity: 1;
+        }
+
+        #chat-box {
+            flex-grow: 1;
+            background: rgba(255,255,255,0.1);
+            padding: 20px;
+            border-radius: 10px;
+            overflow-y: auto;
+            max-height: 400px;
+            margin-bottom: 20px;
+        }
+
+        .message {
+            margin-bottom: 15px;
+        }
+
+        .user-msg {
+            color: #ffd700;
+            font-weight: bold;
+        }
+
+        .bot-msg {
+            color: #ffffff;
+        }
+
+        #input-area {
+            display: flex;
+            gap: 10px;
+        }
+
+        #message-input {
+            flex-grow: 1;
+            padding: 10px;
+            font-size: 1.2rem;
+            border-radius: 8px;
+            border: none;
+        }
+
+        #send-btn {
+            background: #ffcc00;
+            border: none;
+            padding: 10px 20px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            cursor: pointer;
+            border-radius: 8px;
+            color: #000;
+        }
+
+        #send-btn:hover {
+            background: #e6b800;
+        }
+    </style>
+</head>
+<body>
+    <a href="/" class="cineclik-logo">CineClik</a>
+<video class="bg-video" autoplay muted loop>
+    <source src="{{ url_for('static', filename='fond.mp4') }}" type="video/mp4" />
+</video>
+
+<div class="content">
+    <div class="header" id="avatar-header">
+        <h1>Parlez à l'assistant</h1>
+        <div class="avatar-container" style="position: relative;">
+            <img src="{{ url_for('static', filename='avatar.png') }}" alt="Assistant Avatar" class="avatar-inline" id="avatar">
+            <div class="speech-bubble" id="bubble">👔 Besoin d'un coup de main, agent ?</div>
+        </div>
+    </div>
+
+    <div id="chat-box"></div>
+
+    <div id="input-area">
+        <input type="text" id="message-input" placeholder="Tapez votre message ici..." autocomplete="off" />
+        <button id="send-btn">Envoyer</button>
+    </div>
+</div>
+
+<script>
+    const chatBox = document.getElementById('chat-box');
+    const input = document.getElementById('message-input');
+    const sendBtn = document.getElementById('send-btn');
+
+    function appendMessage(text, className) {
+        const msgDiv = document.createElement('div');
+        msgDiv.classList.add('message', className);
+        msgDiv.textContent = text;
+        chatBox.appendChild(msgDiv);
+        chatBox.scrollTop = chatBox.scrollHeight;
+    }
+
+    async function sendMessage() {
+        const message = input.value.trim();
+        if (!message) return;
+        appendMessage(`Vous : ${message}`, 'user-msg');
+        input.value = '';
+
+        try {
+            const response = await fetch('/chat', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({ message })
+            });
+            const data = await response.json();
+            appendMessage(`Assistant : ${data.reply}`, 'bot-msg');
+        } catch (error) {
+            appendMessage("Erreur lors de l'envoi du message.", 'bot-msg');
+        }
+    }
+
+    sendBtn.addEventListener('click', sendMessage);
+    input.addEventListener('keypress', function (e) {
+        if (e.key === 'Enter') {
+            sendMessage();
+        }
+    });
+
+    // Avatar click interaction
+    const avatarHeader = document.getElementById('avatar-header');
+    const avatar = document.getElementById('avatar');
+
+    avatar.addEventListener('click', () => {
+        avatarHeader.classList.add('active');
+        setTimeout(() => avatarHeader.classList.remove('active'), 3000);
+    });
+</script>
+
+</body>
+</html>
+
+
