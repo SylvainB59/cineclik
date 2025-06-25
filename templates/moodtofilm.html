@@ -164,7 +164,7 @@
         <!-- On ajuste le style pour une grille plus large -->
         <div class="mood-grid" style="max-width: 1200px; gap: 20px;">
             {% for film in films %}
-            <a href="{{ url_for('film_infos', tconst=film.tconst) }}" class="mood-card">
+            <a href="{{ url_for('film_infos', tconst=film.tconst, mood=mood_choisi, page=page_actuelle) }}" class="mood-card">
                 <img src="https://image.tmdb.org/t/p/w342{{ film.poster_path }}" alt="{{ film.originalTitle }}" />
                 <!-- NOUVEAU : Ajout de la note si elle est supérieure à 0 -->
                 {% if film.averageRating and film.averageRating > 0 %}
