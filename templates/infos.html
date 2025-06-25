@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ film.originalTitle }} - CineClik</title>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Forum&display=swap" rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Bebas Neue', sans-serif;
+            color:  #ffcc00;
+            background-image: url('https://image.tmdb.org/t/p/w500{{ film.backdrop_path }}');
+            background-size: cover;
+            background-position: center;
+            font-size: 1.2em;
+        }
+
+        .cineclik-logo {
+            position: fixed;
+            top: 20px;
+            right: 30px;
+            font-size: 28px;
+            color: #fff;
+            background: rgba(0, 0, 0, 0.6);
+            padding: 8px 15px;
+            border-radius: 10px;
+            z-index: 2;
+            text-decoration: none;
+        }
+
+        .overlay {
+            background-color: rgba(0, 0, 0, 0.75);
+            /* padding: 40px; */
+            min-height: 100vh;
+        }
+
+        .container {
+            display: flex;
+            gap: 40px;
+            flex-wrap: wrap;
+            padding: 30px;
+        }
+
+        .poster {
+            flex-shrink: 0;
+        }
+
+        .poster img {
+            width: 300px;
+            border-radius: 10px;
+        }
+
+        .info {
+            flex: 5;
+            min-width: 300px;
+        }
+
+        .info h1 {
+            font-size: 4em;
+            margin-bottom: 10px;
+        }
+
+        .info .meta {
+            font-size: 1.2em;
+            margin-bottom: 20px;
+            color: #ccc;
+        }
+
+        .info .section {
+            margin-bottom: 20px;
+        }
+
+        #trailer-container {
+            display: none;
+            margin-top: 20px;
+        }
+
+        .trailer-button {
+            background-color: #ffcc00;
+            color: black;
+            font-size: 1em;
+            padding: 10px 20px;
+            border: none;
+            cursor: pointer;
+            border-radius: 8px;
+            font-family: 'Bebas Neue', sans-serif;
+        }
+
+        iframe {
+            border: none;
+            width: 100%;
+            max-width: 640px;
+            height: 360px;
+            border-radius: 10px;
+        }
+
+        .texte {
+            font-family: "Forum", serif;
+            /* font-weight: 400; */
+            font-style: normal;
+        }
+    </style>
+</head>
+<body>
+    <a href="/" class="cineclik-logo">CineClik</a>
+    <div class="overlay">
+        <div class="container">
+            <div class="poster">
+                {% if film.poster_path %}
+                    <img src="https://image.tmdb.org/t/p/w500{{ film.poster_path }}" alt="Affiche de {{ film.originalTitle }}">
+                {% else %}
+                    <p>Aucune affiche disponible</p>
+                {% endif %}
+            </div>
+            <div class="info">
+                <h1>{{ film.originalTitle }}</h1>
+                <div class="meta">{{ film.genres_list }} | {{ film.runtimeMinutes }} min</div>
+
+                <div class="section">
+                    <strong>Synopsis :</strong>
+                    <p class="texte">{{ film.overview_text }}</p>
+                </div>
+
+                <div class="section">
+                    <strong>Réalisateur :</strong>
+                    <p class="texte">{{ film.directors_name }}</p>
+                </div>
+
+                <div class="section">
+                    <strong>Acteurs :</strong>
+                    <p class="texte">{{ film.actors_names }}</p>
+                </div>
+
+                {% if film.video_url %}
+                <button class="trailer-button" onclick="afficherBandeAnnonce()">Voir la bande-annonce</button>
+                <div id="trailer-container">
+                    <iframe src="{{ film.video_url }}" allowfullscreen></iframe>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function afficherBandeAnnonce() {
+            document.getElementById("trailer-container").style.display = "block";
+        }
+    </script>
+</body>
+</html>

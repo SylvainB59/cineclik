@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8" />
+    <title>Recommandation par film</title>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href={{ url_for('static', filename='style_ftf.css') }}>
+
+    <style>
+        body,
+        html {
+            margin: 0;
+            padding: 0;
+            font-family: 'Bebas Neue', sans-serif;
+            color: #fff;
+            overflow-x: hidden;
+            height: 100%;
+            color: #ffcc00;
+        }
+
+        .cineclik-logo {
+            position: fixed;
+            top: 20px;
+            right: 30px;
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 28px;
+            color: #fff;
+            background: rgba(0, 0, 0, 0.6);
+            padding: 8px 15px;
+            border-radius: 10px;
+            z-index: 2;
+        }
+
+        .cineclik-logo:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .bg-video {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            object-fit: cover;
+            z-index: -1;
+            opacity: 0.4;
+            filter: brightness(1.2) contrast(1.1);
+            /* amélioration visuelle */
+        }
+
+        .content {
+            position: relative;
+            z-index: 1;
+            /* padding: 50px 30px; */
+            background: rgba(0, 0, 0, 0.6);
+            min-height: 100vh;
+        }
+
+        form input {
+            flex-grow: 1;
+            max-width: 400px;
+            padding: 10px;
+            font-size: 1.5rem;
+            border-radius: 8px;
+            border: none;
+            color: #ffcc00;
+        }
+
+        form button {
+            background: #ffcc00;
+            border: none;
+            padding: 10px 20px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            cursor: pointer;
+            border-radius: 8px;
+            color: #000;
+        }
+        /*
+        .container {
+            max-width: 900px;
+            margin: auto;
+        }
+
+        .page-title {
+        font-size: 2.2rem;
+        font-weight: normal;
+        color: #ffcc00;
+        border-bottom: 2px solid #ffcc00;
+        padding-bottom: 5px;
+        margin-left: 0;
+        margin-bottom: 30px;
+        display: inline-block;
+
+}
+        .search-bar {
+            width: 100%;
+            max-width: 600px;
+            padding: 12px;
+            font-size: 1.2rem;
+            border-radius: 8px;
+            border: none;
+            margin: 0 auto 40px;
+            display: block;
+            background: rgba(255, 255, 255, 0.9);
+            color: #111;
+        }
+        .main-film {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+        .main-film img {
+            width: 200px;
+            height: 300px;
+            border-radius: 8px;
+            background-color: #444;
+            display: inline-block;
+            line-height: 300px;
+            color: #ccc;
+            font-size: 1.5rem;
+            user-select: none;
+        }
+        .main-film h1 {
+            margin: 20px 0 10px;
+        }
+        .main-film p {
+            font-size: 1rem;
+            max-width: 600px;
+            margin: 0 auto;
+            color: #ddd;
+        }
+        .similar-films h2 {
+            font-size: 1.8rem;
+            color: #ffcc00;
+            margin-bottom: 20px;
+        }
+        .film-list {
+            display: flex;
+            gap: 20px;
+            overflow-x: auto;
+            padding-bottom: 10px;
+        }
+        .film-item {
+            min-width: 140px;
+            height: 210px;
+            border-radius: 8px;
+            background-color: #555;
+            color: #ccc;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1rem;
+            user-select: none;
+            cursor: default;
+            flex-shrink: 0;
+        }
+            */
+    </style>
+</head>
+
+<body>
+    <a href="/" class="cineclik-logo">CineClik</a>
+    <!-- Vidéo de fond -->
+    <video class="bg-video" autoplay muted loop>
+        <source src="{{ url_for('static', filename='fond.mp4') }}" type="video/mp4" />
+        Votre navigateur ne supporte pas la vidéo.
+    </video>
+
+
+    <!-- Contenu principal avec filtre -->
+    <div class="content">
+        <div class="container">
+            <h1>Trouvez votre prochain film !</h1>
+
+            <form method="POST">
+                <div class="autocomplete-container">
+                    <input type="text" id="movie_title_input" name="movie_title"
+                        placeholder="Entrez un titre de film (ex: Inception)" required value="{{ movie_title_input }}"
+                        autocomplete="off">
+                    <button type="submit">Recommander</button>
+                    <ul id="autocomplete-suggestions" class="suggestions-list" style="display: none;">
+                        <!-- Les suggestions d'autocomplétion seront insérées ici par JavaScript -->
+                    </ul>
+                </div>
+            </form>
+
+            {% if recommendations %}
+            <div class="results2">
+                <h2>Recommandations pour "{{ movie_title_input }}" :</h2>
+                <div class="box film-row">
+                    {% for rec in recommendations %}
+                    <a href="{{ url_for('film_infos', tconst=rec.tconst) }}" class="film-card">
+                        {% if "Désolé" in rec %}
+                        <p class="error">{{ rec.title }}</p>
+                        {% else %}
+                        <img src={{ rec.poster_path }} alt="">
+                        <figcaption>{{ rec.title }}</figcaption>
+                        {% endif %}
+                    </a>
+                    {% endfor %}
+                </div>
+
+            </div>
+            {% endif %}
+        </div>
+    </div>
+    <script src={{ url_for('static', filename='autocomplete.js' ) }}></script>
+
+</body>
+
+</html>

@@ -6,5 +6,7 @@
 __pycache__/        # Cache Python
 venv/               # Environnement virtuel Python
 /venv                # (pour Jordan)
+venv                # (pour Jordan)
 *.log               # Fichiers de log
 .env                # Fichiers d'environnement local (TRÈS IMPORTANT !)
+*.env
