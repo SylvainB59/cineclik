@@ -164,7 +164,7 @@
         <!-- On ajuste le style pour une grille plus large -->
         <div class="mood-grid" style="max-width: 1200px; gap: 20px;">
             {% for film in films %}
-            <a href="{{ url_for('film_infos', tconst=film.tconst) }}" class="mood-card">
+            <a href="{{ url_for('film_infos', tconst=film.tconst, mood=mood_choisi, page=page_actuelle) }}" class="mood-card">
                 <img src="https://image.tmdb.org/t/p/w342{{ film.poster_path }}" alt="{{ film.originalTitle }}" />
                 <!-- NOUVEAU : Ajout de la note si elle est supérieure à 0 -->
                 {% if film.averageRating and film.averageRating > 0 %}
@@ -176,11 +176,18 @@
         </div>
         <br><br>
 
-        <!-- NOUVEAU : GESTION DE LA PAGINATION -->
-        <div class="pagination" style="display: flex; gap: 20px; align-items: center;">
+        <!-- NOUVEAU : Bloc de pagination complet -->
+        <div class="pagination" style="display: flex; gap: 20px; align-items: center; justify-content: center;">
+            
+            <!-- Le bouton "Page Précédente" : il n'apparaît que si on n'est pas sur la page 1 -->
+            {% if page_actuelle > 1 %}
+                <a href="{{ url_for('moodtofilm', mood=mood_choisi.lower(), page=page_actuelle - 1) }}" style="color: #ffcc00; font-size: 1.5rem; text-decoration:none;">← Page Précédente</a>
+            {% endif %}
+
+            <!-- Votre lien existant pour revenir au menu principal -->
             <a href="{{ url_for('moodtofilm') }}" style="color: #ffcc00; font-size: 1.5rem; text-decoration:none;">Choisir une autre humeur</a>
             
-            <!-- Le bouton "Page Suivante" n'apparaît que si la page actuelle est pleine -->
+            <!-- Le bouton "Page Suivante" : il n'apparaît que si la page est pleine -->
             {% if films|length == recos_par_page %}
                 <a href="{{ url_for('moodtofilm', mood=mood_choisi.lower(), page=page_actuelle + 1) }}" style="color: #ffcc00; font-size: 1.5rem; text-decoration:none;">Page Suivante →</a>
             {% endif %}
