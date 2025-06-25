@@ -139,6 +139,15 @@
                     <iframe src="{{ film.video_url }}" allowfullscreen></iframe>
                 </div>
                 {% endif %}
+                <div style="text-align: left; margin-top: 30px;">
+                    <!-- Ce bouton n'apparaît que si on est venu depuis une page de recommandation -->
+                    {% if mood_origine and page_origine %}
+                        <a href="{{ url_for('moodtofilm', mood=mood_origine.lower(), page=page_origine) }}" 
+                           style="color: #ffcc00; font-size: 1.2rem; text-decoration:none; border: 1px solid #ffcc00; padding: 8px 15px; border-radius: 5px;">
+                            ← Retour aux recommandations
+                        </a>
+                    {% endif %}
+                </div>
             </div>
         </div>
     </div>
