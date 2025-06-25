@@ -3,10 +3,9 @@
 ._*
 
 # Fichiers et dossiers de cache/dépendances de développement (exemples courants)
-__pycache__/        # Cache Python
-venv/               # Environnement virtuel Python
-/venv                # (pour Jordan)
-venv                # (pour Jordan)
+__pycache__/
+/venv/              # Ignorer le dossier venv à la racine (méthode la plus propre)
+venv
 *.log               # Fichiers de log
 .env                # Fichiers d'environnement local (TRÈS IMPORTANT !)
 *.env
