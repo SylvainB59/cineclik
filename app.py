@@ -1,8 +1,6 @@
 from flask import Flask, render_template, request, jsonify
 import requests
 import random 
-<<<<<<< HEAD
-=======
 import pandas as pd
 import joblib
 
@@ -13,7 +11,6 @@ from sklearn.preprocessing import MinMaxScaler
 
 from custom_transformers import FeatureWeightingTransformer
 
->>>>>>> 87b0170 (premier final commit)
 import os
 from dotenv import load_dotenv
 import google.generativeai as genai
